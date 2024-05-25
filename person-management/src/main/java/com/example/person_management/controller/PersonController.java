@@ -1,10 +1,13 @@
 package com.example.person_management.controller;
 
+
 import com.example.person_management.model.Person;
 import com.example.person_management.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +15,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/persons")
 public class PersonController {
-
     @Autowired
     private PersonService personService;
 
@@ -28,12 +30,12 @@ public class PersonController {
     }
 
     @PostMapping
-    public Person createPerson(@RequestBody Person person) {
+    public Person createPerson(@Valid @RequestBody Person person) {
         return personService.savePerson(person);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Person> updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
+    public ResponseEntity<Person> updatePerson(@PathVariable Long id, @Valid @RequestBody Person personDetails) {
         Optional<Person> person = personService.getPersonById(id);
         if (person.isPresent()) {
             Person updatedPerson = person.get();
